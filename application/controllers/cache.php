@@ -82,7 +82,7 @@ class Cache extends REST_Controller {
 							$success = 1;
 							// hooray
 						} else {
-							$this->response(array($modName => "http://mirror.technicpack.net/Technic/mods/".$modName."/".$modName."-".$modVersion));
+							$this->response(array($modName => "http://mirror.technicpack.net/Technic/mods/".$modName."/".$modName."-".$modVersion.".zip"));
 							$success = 1;
 						}
 					}
