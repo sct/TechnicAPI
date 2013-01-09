@@ -32,11 +32,20 @@ class Cache extends REST_Controller {
 					if (!array_key_exists($directory[1],$finalized)) {
 						$finalized[$directory[1]] = array();
 					}
-					$versionSplit = explode("-",$directory[2]);
 
-					$regex = "/-([\w\d.-]+).zip/";
-					preg_match($regex,$directory[2],$versionSplit);
-					$finalized[$directory[1]][$versionSplit[1]] = $md5;
+					// Check if basemods and change up regex
+					if ($directory[1] == "basemods") {
+						$regex = "/-([\w\d.-]+).zip/";
+						preg_match($regex,$directory[2],$versionSplit);
+						$finalized[$directory[1]][$versionSplit[1]] = $md5;
+					} else {
+						$versionSplit = explode("-",$directory[2]);
+						$splitCount = count($versionSplit) - 1;
+						$modversion = str_replace("\r", "", $versionSplit[$splitCount]);
+
+						$modversion = str_replace(".zip", "", $modversion);
+						$finalized[$directory[1]][$modversion] = $md5;
+					}
 				}
 			}
 		}
