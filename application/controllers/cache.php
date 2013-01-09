@@ -9,6 +9,8 @@ class Cache extends REST_Controller {
 	{
 		$yaml = file_get_contents(FCPATH.'checksum.yml');
 		$checksum = Spyc::YAMLLoad($yaml);
+
+		// DEBUG
 		echo "<pre>";
 		print_r($checksum);
 	}
@@ -64,18 +66,19 @@ class Cache extends REST_Controller {
 				if ($this->uri->segment(4) != NULL)
 				{
 					$modVersion = $this->uri->segment(4);
-					if ($this->uri->segment(5) != NULL && $this->uri->segment(5) == "MD5")
+					
+					if (array_key_exists($modVersion,$checksum[$modName]))
 					{
-						if (array_key_exists($modVersion,$checksum[$modName]))
+						if ($this->uri->segment(5) != NULL && $this->uri->segment(5) == "MD5")
 						{
 							// HOLY GOD NESTED IFS ARE TERRIBLE KILL ME NOW
 							$this->response(array("MD5" => $checksum[$modName][$modVersion]));
 							$success = 1;
 							// hooray
+						} else {
+							$this->response(array($modName => "http://mirror.technicpack.net/Technic/mods/".$modName."/".$modName."-".$modVersion));
+							$success = 1;
 						}
-					} else {
-						$this->response(array($modName => "http://mirror.technicpack.net/Technic/mods/".$modName."/".$modName."-".$modVersion));
-						$success = 1;
 					}
 				}
 			}
