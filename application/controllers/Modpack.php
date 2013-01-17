@@ -10,7 +10,14 @@ class Modpack extends REST_Controller
 	{
 		$yaml = file_get_contents('http://mirror.technicpack.net/Technic/modpacks.yml');
 		$modpacks = Spyc::YAMLLoad($yaml);
-		$this->response($modpacks);
+		$modpacks = $modpacks['modpacks'];
+		$plist = array();
+		foreach ($modpacks as $key => $modpack)
+		{
+			array_push($plist, $key);
+		}
+		$pmod = array('modpacks' => $plist);
+		$this->response($pmod);
 	}
 
 	public function details_get()
@@ -25,7 +32,7 @@ class Modpack extends REST_Controller
 		switch ($request) 
 		{
 			case "MD5":
-				$md5 = array("md5" => md5($yaml));
+				$md5 = array("MD5" => md5($yaml));
 				$this->response($md5);
 				break;
 			case "build":
@@ -46,6 +53,7 @@ class Modpack extends REST_Controller
 				}
 
 				$modpack = array(
+								"name" => $this->uri->segment(2),
 								"recommended" => $modpackData['recommended'],
 								"latest" => $modpackData['latest'],
 								"builds" => $modpackBuilds
