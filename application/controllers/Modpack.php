@@ -5,19 +5,27 @@ require_once(APPPATH.'third_party/Spyc.php');
 
 class Modpack extends REST_Controller
 {
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->rest_format = "json";
+	}
 	
 	public function index_get()
 	{
 		$yaml = file_get_contents('http://mirror.technicpack.net/Technic/modpacks.yml');
 		$modpacks = Spyc::YAMLLoad($yaml);
-		$modpacks = $modpacks['modpacks'];
+		//$modpacks = $modpacks['modpacks'];
+		/*
 		$plist = array();
 		foreach ($modpacks as $key => $modpack)
 		{
 			array_push($plist, $key);
 		}
 		$pmod = array('modpacks' => $plist);
-		$this->response($pmod);
+		*/
+		$this->response($modpacks);
 	}
 
 	public function details_get()

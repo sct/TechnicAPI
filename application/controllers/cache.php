@@ -5,6 +5,12 @@ require_once(APPPATH.'third_party/Spyc.php');
 
 class Cache extends REST_Controller {
 
+	public function __construct()
+	{
+		parent::__construct();
+		$this->rest_format = "json";
+	}
+
 	public function index_get()
 	{
 		$yaml = file_get_contents(FCPATH.'checksum.yml');

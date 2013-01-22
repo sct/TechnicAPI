@@ -127,7 +127,7 @@ abstract class REST_Controller extends CI_Controller
 		'jsonp' => 'application/javascript',
 		'serialized' => 'application/vnd.php.serialized',
 		'php' => 'text/plain',
-		'html' => 'text/html',
+		'json' => 'text/html',
 		'csv' => 'application/csv'
 	);
 
