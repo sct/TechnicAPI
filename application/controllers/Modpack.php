@@ -16,16 +16,19 @@ class Modpack extends REST_Controller
 	{
 		$yaml = file_get_contents('http://mirror.technicpack.net/Technic/modpacks.yml');
 		$modpacks = Spyc::YAMLLoad($yaml);
-		//$modpacks = $modpacks['modpacks'];
-		/*
+		$modpacks = $modpacks['modpacks'];
+		
 		$plist = array();
+		$blocked_packs = array('technicssp','custom1','custom2','custom3');
 		foreach ($modpacks as $key => $modpack)
 		{
-			array_push($plist, $key);
+			//array_push($plist, $key);
+			if (!in_array($key, $blocked_packs))
+				$plist[$key] = $modpack;
 		}
 		$pmod = array('modpacks' => $plist);
-		*/
-		$this->response($modpacks);
+		
+		$this->response($pmod);
 	}
 
 	public function details_get()
@@ -62,6 +65,9 @@ class Modpack extends REST_Controller
 
 				$modpack = array(
 								"name" => $this->uri->segment(2),
+								"icon_md5" => md5(file_get_contents("http://mirror.technicpack.net/Technic/".$this->uri->segment(2)."/resources/icon.png")),
+								"logo_md5" => md5(file_get_contents("http://mirror.technicpack.net/Technic/".$this->uri->segment(2)."/resources/logo_180.png")),
+								"background_md5" => md5(file_get_contents("http://mirror.technicpack.net/Technic/".$this->uri->segment(2)."/resources/background.jpg")),
 								"recommended" => $modpackData['recommended'],
 								"latest" => $modpackData['latest'],
 								"builds" => $modpackBuilds
