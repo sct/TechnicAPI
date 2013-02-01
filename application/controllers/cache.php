@@ -32,7 +32,12 @@ class Cache extends REST_Controller {
 			$md5 = $split[0];
 			if (isset($split[1]))
 			{
-			$directory = explode("\\",$split[1]);
+			if (preg_match("/\\\/",$split[1])) {
+				$directory = explode("\\",$split[1]);
+			} else {
+				$directory = explode("/",$split[1]);
+			}
+			
 				if ($directory[0] == "mods")
 				{
 					if (!array_key_exists($directory[1],$finalized)) {
