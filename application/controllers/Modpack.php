@@ -14,7 +14,7 @@ class Modpack extends REST_Controller
 	
 	public function index_get()
 	{
-		$yaml = file_get_contents('http://mirror.technicpack.net/Technic/modpacks.yml');
+		$yaml = file_get_contents($this->config->item('repo_url').'modpacks.yml');
 		$modpacks = Spyc::YAMLLoad($yaml);
 		$modpacks = $modpacks['modpacks'];
 		
@@ -26,7 +26,7 @@ class Modpack extends REST_Controller
 			if (!in_array($key, $blocked_packs))
 				$plist[$key] = $modpack;
 		}
-		$pmod = array('modpacks' => $plist);
+		$pmod = array('modpacks' => $plist,'mirror_url' => $this->config->item('repo_url'));
 		
 		$this->response($pmod);
 	}
@@ -37,7 +37,7 @@ class Modpack extends REST_Controller
 			$request = $this->uri->segment(3);
 		} else { $request = NULL; }
 
-		$yaml = file_get_contents('http://mirror.technicpack.net/Technic/'.$this->uri->segment(2).'/modpack.yml');
+		$yaml = file_get_contents($this->config->item('repo_url').$this->uri->segment(2).'/modpack.yml');
 		$modpackData = Spyc::YAMLLoad($yaml);
 				
 		switch ($request) 
@@ -65,9 +65,9 @@ class Modpack extends REST_Controller
 
 				$modpack = array(
 								"name" => $this->uri->segment(2),
-								"icon_md5" => md5(file_get_contents("http://mirror.technicpack.net/Technic/".$this->uri->segment(2)."/resources/icon.png")),
-								"logo_md5" => md5(file_get_contents("http://mirror.technicpack.net/Technic/".$this->uri->segment(2)."/resources/logo_180.png")),
-								"background_md5" => md5(file_get_contents("http://mirror.technicpack.net/Technic/".$this->uri->segment(2)."/resources/background.jpg")),
+								"icon_md5" => md5(file_get_contents($this->config->item('repo_url').$this->uri->segment(2)."/resources/icon.png")),
+								"logo_md5" => md5(file_get_contents($this->config->item('repo_url').$this->uri->segment(2)."/resources/logo_180.png")),
+								"background_md5" => md5(file_get_contents($this->config->item('repo_url').$this->uri->segment(2)."/resources/background.jpg")),
 								"recommended" => $modpackData['recommended'],
 								"latest" => $modpackData['latest'],
 								"builds" => $modpackBuilds

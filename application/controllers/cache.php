@@ -23,7 +23,7 @@ class Cache extends REST_Controller {
 
 	public function update_get()
 	{
-		$checksum = file_get_contents('http://mirror.technicpack.net/Technic/CHECKSUM.md5');
+		$checksum = file_get_contents($this->config->item('repo_url').'CHECKSUM.md5');
 		$md5Array = explode("\n",$checksum);
 		$finalized = array();
 		foreach ($md5Array as $entry)
@@ -88,7 +88,7 @@ class Cache extends REST_Controller {
 							$success = 1;
 							// hooray
 						} else {
-							$this->response(array($modName => "http://mirror.technicpack.net/Technic/mods/".$modName."/".$modName."-".$modVersion.".zip"));
+							$this->response(array($modName => $this->config->item('repo_url')."mods/".$modName."/".$modName."-".$modVersion.".zip"));
 							$success = 1;
 						}
 					}
