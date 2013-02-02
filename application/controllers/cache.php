@@ -50,12 +50,9 @@ class Cache extends REST_Controller {
 						preg_match($regex,$directory[2],$versionSplit);
 						$finalized[$directory[1]][$versionSplit[1]] = $md5;
 					} else {
-						$versionSplit = explode("-",$directory[2]);
-						$splitCount = count($versionSplit) - 1;
-						$modversion = str_replace("\r", "", $versionSplit[$splitCount]);
-
-						$modversion = str_replace(".zip", "", $modversion);
-						$finalized[$directory[1]][$modversion] = $md5;
+						$regex = "/" . $directory[1] . "\-(.+).zip/";
+						preg_match( $regex, $directory[2], $modversion );
+						$finalized[$directory[1]][$modversion[1]] = $md5;
 					}
 				}
 			}
